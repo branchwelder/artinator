@@ -1,70 +1,101 @@
 # Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### Remove Unnecessary Things from Create React App
 
-## Available Scripts
+You see a page that says "edit src/App.js and save to reload." That's exactly
+what we're going to do!
 
-In the project directory, you can run:
+I removed:
 
-### `npm start`
+- public/
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+  - favicon.ico
+  - logo192.png
+  - logo512.png
+  - manifest.json
+  - robots.txt
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- src/
+  - App.test.js
+  - logo.svg
+  - setupTests.js
+  - reportWebVitals.js
 
-### `npm test`
+I modified `index.js` to read:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```javascript
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./App";
 
-### `npm run build`
+ReactDOM.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+  document.getElementById("root")
+);
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+I modified `App.js` to read:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```javascript
+import "./App.css";
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+function App() {
+  return <div className='appContainer'>Hello world!</div>;
+}
 
-### `npm run eject`
+export default App;
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+I modified `App.css` to read:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```css
+.appContainer {
+  text-align: center;
+  background-color: rgb(66, 66, 66);
+  color: white;
+  height: 100rem;
+}
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+I modified `public/index.html` to read:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>React App</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+  </body>
+</html>
+```
 
-## Learn More
+Now, we have a much simpler starting point to talk about backends. You don't
+necessarily want to remove all of these things in your own projects, but I think
+it will help us focus on what is going on.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Make a backend
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+`python -m pip install flask`
 
-### Code Splitting
+In your backend folder, make a file called `app.py`. Paste the following starter
+code inside of it:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```python
+from flask import Flask
 
-### Analyzing the Bundle Size
+app = Flask(__name__)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-### Making a Progressive Web App
+@app.route("/")
+def hello_world():
+    return "<p>Hello, World!</p>"
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+cd into your backend folder, and run `python -m flask run` You can navigate to
+`http://127.0.0.1:5000/` and see your site!

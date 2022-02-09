@@ -1,25 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { useState } from "react";
 
-function App() {
+export default function App() {
+  const [art, setArt] = useState([]);
+  const [text, setText] = useState("");
+
+  function fetchRandomArt() {
+    fetch("/randart")
+      .then((response) => response.json())
+      .then((data) => setArt([...art, data.art]));
+  }
+  function send() {
+    // props.sendMessage(text);
+    setText("");
+  }
+  function onKeyPress(e) {
+    if (e.key === "Enter") {
+      send();
+    }
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+    <div className='appContainer'>
+      <header>
+        <h1>ASCII Artinator</h1>
       </header>
+      <input
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        onKeyPress={onKeyPress}
+      />
+      <br />
+      <button onClick={fetchRandomArt}>random</button>
+      {art.map((i) => (
+        <div className='artItem'>{i}</div>
+      ))}
     </div>
   );
 }
-
-export default App;
