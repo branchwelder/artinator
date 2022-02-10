@@ -1,39 +1,63 @@
 import "./App.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function App() {
-  const [art, setArt] = useState([]);
   const [text, setText] = useState("");
+  const [entries, setEntries] = useState([]);
+  const [username, setUsername] = useState("anon");
 
-  function fetchRandomArt() {
-    fetch("/randart")
+  useEffect(() => {
+    fetch("/read_entries")
       .then((response) => response.json())
-      .then((data) => setArt([...art, data.art]));
+      .then((data) => setEntries(data.entries));
+  }, []);
+
+  function addEntry() {
+    fetch("/add_entry", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username: username, text: text }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setEntries([...entries, data]);
+        setText("");
+      });
   }
-  function send() {
-    // props.sendMessage(text);
-    setText("");
-  }
+
   function onKeyPress(e) {
     if (e.key === "Enter") {
-      send();
+      addEntry();
     }
   }
+
   return (
     <div className='appContainer'>
       <header>
         <h1>ASCII Artinator</h1>
       </header>
+      <input value={username} onChange={(e) => setUsername(e.target.value)} />
+      <br />
       <input
         value={text}
         onChange={(e) => setText(e.target.value)}
         onKeyPress={onKeyPress}
       />
       <br />
-      <button onClick={fetchRandomArt}>random</button>
-      {art.map((i) => (
-        <div className='artItem'>{i}</div>
-      ))}
+      <div>
+        {entries
+          .slice()
+          .reverse()
+          .map((entry, index) => (
+            <div className='entry' key={index}>
+              <span className='username'>{entry.username}</span>
+              <br />
+              <span className='text'>{entry.text}</span>
+            </div>
+          ))}
+      </div>
     </div>
   );
 }

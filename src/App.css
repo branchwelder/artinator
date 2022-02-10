@@ -1,23 +1,17 @@
 .appContainer {
-  text-align: center;
+  margin: 1rem;
 }
 
-.artItem {
+.entry {
+  margin: 1rem 0;
+}
+
+.username {
   font-weight: bolder;
-  font-size: x-large;
+  font-size: large;
+  margin-right: 1rem;
 }
 
-button {
-  background-color: blueviolet;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  color: white;
-  font-size: x-large;
-  font-family: monospace;
-}
-
-button:hover {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.2) 0 0);
-  cursor: pointer;
+.text {
+  white-space: pre-wrap;
 }
